@@ -1,0 +1,16 @@
+# Level 2 notes
+
+## Thin provisioning (Part 1)
+Why a 10 GiB qcow2 uses almost no space: ...
+
+## Storage pool (Part 2)
+Pool vmstore = /data/vmstore, SELinux label virt_image_t, why: ...
+
+## Snapshots (Parts 6 and 10)
+Revert method that worked on my host (Red Hat revert / manual fallback): ...
+
+## Template and clones (Parts 7-9)
+virt-sysprep removes: ... ; full clone vs linked clone: ...
+
+## Networks (Part 5)
+default (NAT, 192.168.122.0/24) vs lab-net (isolated, 10.10.10.0/24): ...

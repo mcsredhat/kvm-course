@@ -1,0 +1,25 @@
+# the Ansible project has its own repo: github.com/mcsredhat/kvm-two-site-dc
+/level6/dc/
+# disk images, ISOs, seeds, archives, downloads
+*.img
+*.iso
+*.qcow2
+*.raw
+*.tar.gz
+*.tgz
+*.xz
+*.zip
+node_exporter-*/
+# secrets and keys
+*secret*
+*.pem
+*.key
+id_rsa*
+id_ed25519*
+*vault*.yml
+.vault_pass*
+# logs
+*.log
+# generated scan output (host details)
+results*.xml
+*-report.html

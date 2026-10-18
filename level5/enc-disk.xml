@@ -1,0 +1,8 @@
+<disk type='file' device='disk'>
+  <driver name='qemu' type='qcow2'/>
+  <source file='/var/lib/libvirt/images/enc.qcow2'/>
+  <encryption format='luks'>
+    <secret type='passphrase' uuid='7f9be102-6680-4628-9bf1-b2e7f1d0b142'/>
+  </encryption>
+  <target dev='vdc' bus='virtio'/>
+</disk>

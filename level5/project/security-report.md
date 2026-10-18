@@ -1,0 +1,13 @@
+# KVM host security report (2026-10-15T11:57:56+02:00)
+- [PASS] SELinux enforcing: sVirt isolation depends on it
+- [PASS] QEMU unprivileged: limits the impact of a VM escape
+- [PASS] No libvirt TCP: no unauthenticated remote management
+- [PASS] No VNC on 0.0.0.0: consoles reachable only via tunnel
+- [FAIL] libvirt group empty: group membership is root-equivalent
+- [PASS] Polkit rule present: least-privilege VM administration
+- [PASS] Audit rules loaded: evidence of configuration changes
+- [FAIL] SSH: no passwords: management plane uses keys
+- [PASS] No mitigations=off: CPU side-channel mitigations stay on
+- [PASS] firewalld active: host firewall enforced
+- [PASS] libvirt zone: no ssh: guests cannot reach host SSH
+- [FAIL] No pending security updates: known CVEs are patched

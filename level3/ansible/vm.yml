@@ -1,0 +1,41 @@
+---
+- name: "{{ vm.name }}: cloud-init directory"
+  ansible.builtin.file:
+    path: "{{ vm_dir }}/cloud-init/{{ vm.name }}"
+    state: directory
+    mode: "0755"
+
+- name: "{{ vm.name }}: render user-data and meta-data"
+  ansible.builtin.template:
+    src: "{{ item }}.j2"
+    dest: "{{ vm_dir }}/cloud-init/{{ vm.name }}/{{ item }}"
+    mode: "0644"
+  loop:
+    - user-data
+    - meta-data
+
+- name: "{{ vm.name }}: seed ISO (label cidata)"
+  ansible.builtin.command:
+    cmd: >-
+      xorriso -as genisoimage -output {{ vm_dir }}/{{ vm.name }}-seed.iso
+      -volid cidata -joliet -rock user-data meta-data
+    chdir: "{{ vm_dir }}/cloud-init/{{ vm.name }}"
+    creates: "{{ vm_dir }}/{{ vm.name }}-seed.iso"
+
+- name: "{{ vm.name }}: overlay disk on the golden image"
+  ansible.builtin.command:
+    cmd: >-
+      qemu-img create -f qcow2 -b {{ base_image }} -F qcow2
+      {{ vm_dir }}/{{ vm.name }}.qcow2 {{ vm.disk }}
+    creates: "{{ vm_dir }}/{{ vm.name }}.qcow2"
+
+- name: "{{ vm.name }}: define the domain (only if missing)"
+  community.libvirt.virt:
+    command: define
+    xml: "{{ lookup('ansible.builtin.template', 'domain.xml.j2') }}"
+  when: vm.name not in existing.stdout_lines
+
+- name: "{{ vm.name }}: start"
+  community.libvirt.virt:
+    name: "{{ vm.name }}"
+    state: running

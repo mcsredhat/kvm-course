@@ -1,0 +1,16 @@
+base_image: /var/lib/libvirt/images/base/rhel98-base.qcow2
+vm_dir: /var/lib/libvirt/images
+ssh_pubkey: "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIKPZXtSBTYqP/PKb+Rj3oCIOxFXaCotmua0M8RwKIrss assulai@rhel-workstation"
+vms:
+  - name: node1
+    vcpu: 1
+    mem: 1024
+    disk: 20G
+  - name: node2
+    vcpu: 1
+    mem: 1024
+    disk: 20G
+  - name: node3
+    vcpu: 1
+    mem: 1024
+    disk: 20G

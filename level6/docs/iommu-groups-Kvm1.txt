@@ -1,0 +1,29 @@
+Group 0:
+   00:02.0 VGA compatible controller [0300]: Intel Corporation Iris Plus Graphics G7 [8086:8a52] (rev 07)
+Group 1:
+   00:00.0 Host bridge [0600]: Intel Corporation Ice Lake-LP Processor Host Bridge/DRAM Registers [8086:8a12] (rev 03)
+Group 10:
+   00:1f.0 ISA bridge [0601]: Intel Corporation Ice Lake-LP LPC Controller [8086:3482] (rev 30)
+   00:1f.3 Multimedia audio controller [0401]: Intel Corporation Ice Lake-LP Smart Sound Technology Audio Controller [8086:34c8] (rev 30)
+   00:1f.4 SMBus [0c05]: Intel Corporation Ice Lake-LP SMBus Controller [8086:34a3] (rev 30)
+   00:1f.5 Serial bus controller [0c80]: Intel Corporation Ice Lake-LP SPI Controller [8086:34a4] (rev 30)
+Group 11:
+   01:00.0 Non-Volatile memory controller [0108]: Micron Technology Inc 2300 NVMe SSD [Santana] [1344:5405]
+Group 2:
+   00:04.0 Signal processing controller [1180]: Intel Corporation Processor Power and Thermal Controller [8086:8a03] (rev 03)
+Group 3:
+   00:0d.0 USB controller [0c03]: Intel Corporation Ice Lake Thunderbolt 3 USB Controller [8086:8a13] (rev 03)
+Group 4:
+   00:12.0 Serial controller [0700]: Intel Corporation Ice Lake-LP Integrated Sensor Solution [8086:34fc] (rev 30)
+Group 5:
+   00:14.0 USB controller [0c03]: Intel Corporation Ice Lake-LP USB 3.1 xHCI Host Controller [8086:34ed] (rev 30)
+   00:14.2 RAM memory [0500]: Intel Corporation Ice Lake-LP DRAM Controller [8086:34ef] (rev 30)
+Group 6:
+   00:14.3 Network controller [0280]: Intel Corporation Ice Lake-LP PCH CNVi WiFi [8086:34f0] (rev 30)
+Group 7:
+   00:15.0 Serial bus controller [0c80]: Intel Corporation Ice Lake-LP Serial IO I2C Controller #0 [8086:34e8] (rev 30)
+   00:15.1 Serial bus controller [0c80]: Intel Corporation Ice Lake-LP Serial IO I2C Controller #1 [8086:34e9] (rev 30)
+Group 8:
+   00:16.0 Communication controller [0780]: Intel Corporation Ice Lake-LP Management Engine [8086:34e0] (rev 30)
+Group 9:
+   00:1d.0 PCI bridge [0604]: Intel Corporation Ice Lake-LP PCI Express Root Port #9 [8086:34b0] (rev 30)

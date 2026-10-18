@@ -1,0 +1,43 @@
+---
+- name: Destroy the lab
+  hosts: kvmhost
+  become: true
+  tasks:
+    - name: List existing domains
+      ansible.builtin.command: virsh list --all --name
+      environment:
+        LIBVIRT_DEFAULT_URI: qemu:///system
+      register: existing
+      changed_when: false
+
+    - name: Stop VMs
+      community.libvirt.virt:
+        name: "{{ item.name }}"
+        state: destroyed
+      loop: "{{ vms }}"
+      when: item.name in existing.stdout_lines
+
+    - name: Undefine VMs
+      community.libvirt.virt:
+        name: "{{ item.name }}"
+        command: undefine
+      loop: "{{ vms }}"
+      when: item.name in existing.stdout_lines
+
+    - name: Remove VM disks
+      ansible.builtin.file:
+        path: "{{ vm_dir }}/{{ item.name }}.qcow2"
+        state: absent
+      loop: "{{ vms }}"
+
+    - name: Remove seed ISOs
+      ansible.builtin.file:
+        path: "{{ vm_dir }}/{{ item.name }}-seed.iso"
+        state: absent
+      loop: "{{ vms }}"
+
+    - name: Remove cloud-init working files
+      ansible.builtin.file:
+        path: "{{ vm_dir }}/cloud-init/{{ item.name }}"
+        state: absent
+      loop: "{{ vms }}"

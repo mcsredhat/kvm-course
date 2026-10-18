@@ -1,0 +1,48 @@
+#!/bin/bash
+# vmctl : safe VM wrapper (Level 1 mini-project). TODO: ssh, rm, info, help
+set -euo pipefail
+ENVFILE="$HOME/kvm-course/env.sh"
+[ -f "$ENVFILE" ] || { echo "missing $ENVFILE (Level 1, section 0.2)" >&2; exit 1; }
+# shellcheck source=/dev/null
+source "$ENVFILE"
+IMGDIR=/var/lib/libvirt/images
+
+usage() { echo "usage: $0 {list|create NAME [CPU] [MEM_MB]|ip NAME|ssh NAME [cmd]|stop NAME|kill NAME|rm [-f] NAME|info NAME|help}" >&2; exit 2; }
+need_vm() { [ -n "${1:-}" ] || usage; }
+
+vm_ip() {
+  local vm="$1" ip
+  for _ in $(seq 1 30); do
+    ip=$(virsh domifaddr "$vm" 2>/dev/null | awk '/ipv4/ {print $4}' | cut -d/ -f1 | head -1)
+    if [ -n "$ip" ]; then echo "$ip"; return 0; fi
+    sleep 2
+  done
+  echo "no IP for $vm" >&2; return 1
+}
+
+create() {
+  local vm="$1" cpu="${2:-2}" mem="${3:-2048}" disk="$IMGDIR/$1.qcow2"
+  if virsh dominfo "$vm" >/dev/null 2>&1; then echo "VM $vm already exists" >&2; exit 1; fi
+  if sudo test -e "$disk"; then echo "disk $disk already exists: refusing to overwrite" >&2; exit 1; fi
+  sudo install -m 0644 "$BASE" "$disk"
+  sudo virt-customize -a "$disk" --hostname "$vm" \
+    --run-command 'useradd -m -G wheel devops' \
+    --ssh-inject "devops:file:$SSHKEY" \
+    --write '/etc/sudoers.d/devops:devops ALL=(ALL) NOPASSWD:ALL' \
+    --run-command 'chmod 440 /etc/sudoers.d/devops' \
+    --touch /etc/cloud/cloud-init.disabled --selinux-relabel
+  sudo virt-install --name "$vm" --memory "$mem" --vcpus "$cpu" \
+    --disk path="$disk",bus=virtio --import --osinfo "$OSINFO" \
+    --network network=default,model=virtio --graphics none --noautoconsole
+}
+
+cmd="${1:-help}"
+case "$cmd" in
+  list)   virsh list --all ;;
+  create) need_vm "${2:-}"; create "$2" "${3:-}" "${4:-}" ;;
+  ip)     need_vm "${2:-}"; vm_ip "$2" ;;
+  stop)   need_vm "${2:-}"; virsh shutdown "$2" ;;
+  kill)   need_vm "${2:-}"; virsh destroy "$2" ;;
+  # TODO: ssh, rm (-f), info, help
+  *)      usage ;;
+esac

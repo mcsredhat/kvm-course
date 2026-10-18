@@ -1,0 +1,10 @@
+#cloud-config
+hostname: {{ vm.name }}
+users:
+  - name: devops
+    groups: [wheel]
+    sudo: "ALL=(ALL) NOPASSWD:ALL"
+    shell: /bin/bash
+    lock_passwd: true
+    ssh_authorized_keys:
+      - {{ ssh_pubkey }}
